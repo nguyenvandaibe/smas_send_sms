@@ -11,7 +11,7 @@ import org.tanukisoftware.wrapper.WrapperManager;
 import org.tanukisoftware.wrapper.WrapperListener;
 import vn.com.viettel.DAL.PreNumberTelcoDAL;
 import vn.com.viettel.DAL.UtilBusnisness;
-import vn.com.viettel.dataSource.SmasOracleConnectionPool;
+import vn.com.viettel.dataSource.SmasMysqlConnectionPool;
 import vn.com.viettel.util.CommonUtils;
 import vn.com.viettel.util.GlobalConstant;
 import vn.com.viettel.util.LogUtil;
@@ -48,7 +48,7 @@ public class WrapperService implements WrapperListener {
             if (!Parameters.load(GlobalConstant.GENERAL_CONFIG_PATH)) {// load cac tham so cho chuong trinh
                 LogUtil.InfoExt(logger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "start", CommonUtils.getDateNow(), "Null", "Khong the load duoc cac tham so");
             }
-            SmasOracleConnectionPool.getInstance().initC3P0();// ket noi
+            SmasMysqlConnectionPool.getInstance().initC3P0();// ket noi
             BasicConfigurator.configure();
 
             UtilBusnisness.getReceiverError();

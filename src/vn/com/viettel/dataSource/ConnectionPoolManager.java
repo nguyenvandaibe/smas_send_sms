@@ -12,8 +12,9 @@ import org.apache.log4j.Logger;
 public class ConnectionPoolManager {
 	
 	public static Connection getSMSConnection(Logger logMM) {
-		Connection connection =SmasOracleConnectionPool.getInstance().getConnection(logMM);
-                
+//		Connection connection =SmasOracleConnectionPool.getInstance().getConnection(logMM);
+		Connection connection = SmasMysqlConnectionPool.getInstance().getConnection(logMM);
+
 		return connection;
 	}
 
