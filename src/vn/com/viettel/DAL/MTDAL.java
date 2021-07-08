@@ -40,10 +40,10 @@ public class MTDAL {
         //String selectSt = (Parameters.MaxSMSInSession == -1) ? "" : "TOP " + Parameters.MaxSMSInSession;
         StringBuilder sqlQuey = new StringBuilder();
 
-        sqlQuey.append("SELECT MT.* FROM SMS_MT MT ");
-        sqlQuey.append("LEFT JOIN SMS_TIMER_CONFIG STC ON MT.SMS_TIMER_CONFIG_ID=STC.SMS_TIMER_CONFIG_ID ");
-        sqlQuey.append(" WHERE (MT.SYNC_TIME IS NULL OR MT.SYNC_TIME<SYSDATE)");
-        sqlQuey.append(" AND (MT.SMS_TIMER_CONFIG_ID IS NULL OR (MT.SMS_TIMER_CONFIG_ID IS NOT NULL AND STC.SEND_TIME<SYSDATE))");
+        sqlQuey.append("SELECT mt.* FROM SmsMt mt ");
+        sqlQuey.append("LEFT JOIN SmsTimerConfig stc ON mt.SmsTimerConfigId=stc.Id ");
+        sqlQuey.append("WHERE (mt.SyncTime IS NULL OR mt.SyncTime < SYSDATE) ");
+        sqlQuey.append("AND (mt.SmsTimerConfigId IS NULL OR (mt.SmsTimerConfigId IS NOT NULL AND stc.SendTime < SYSDATE))");
 
         //sqlQuey.append((Parameters.MaxSMSInSession == -1) ? "" : "TOP " + Parameters.MaxSMSInSession);
         /*sqlQuey.append(" m.* FROM [SMS].[MT] m");
@@ -56,9 +56,9 @@ public class MTDAL {
          */
         int rowNum = Parameters.MaxSMSInSession > 0 ? Parameters.MaxSMSInSession : 1000;
         sqlQuey.append(" AND  ROWNUM<=").append(rowNum);
-        sqlQuey.append(" AND  MT.RETRY_NUM <").append(Parameters.MaxRetryTimes);
+        sqlQuey.append(" AND  mt.RetryNum <").append(Parameters.MaxRetryTimes);
         if (node.length() > 0) {
-            sqlQuey.append(" AND MOD(TO_NUMBER(SUBSTR(MT.USER_ID,-1,1)),").append(Parameters.CheckListNodes.length).append(")");
+            sqlQuey.append(" AND MOD(TO_NUMBER(SUBSTR(mt.UserId,-1,1)),").append(Parameters.CheckListNodes.length).append(")");
             //sqlQuey.append(" AND CONVERT(INT, RIGHT(m.USER_ID, 1)) %").append(Parameters.CheckListNodes.length);
             sqlQuey.append(" = ").append(node);
         }
@@ -69,24 +69,24 @@ public class MTDAL {
 
         //Neu thoi gian gui tu 
         if (contentType == GlobalConstant.SEND_UNICODE) {
-            sqlQuey.append(" AND MT.CONTENT_TYPE = 1 ");
+            sqlQuey.append(" AND mt.ContentType = 1 ");
         } else if (contentType == GlobalConstant.SEND_NORMAL) {
             //Neu duoc phep gui tu dong thi lay cac ban tin duoc gui tu dong
             if (userDate.after(Parameters.StartAutoTime) && userDate.before(Parameters.EndAutoTime)) {
-                sqlQuey.append(" AND (MT.CONTENT_TYPE is null or MT.CONTENT_TYPE != 1)");
+                sqlQuey.append(" AND (mt.ContentType is null or mt.ContentType != 1)");
             } else {
                 //chi lay cac ban tin gui chu dong
-                sqlQuey.append(" AND (MT.CONTENT_TYPE is  not null AND MT.CONTENT_TYPE != 1)");
+                sqlQuey.append(" AND (mt.ContentType is  not null AND mt.ContentType != 1)");
             }
         }
         if (!"".equals(Parameters.SEND_MOBILE) && Parameters.SEND_MOBILE.length() > 0) {
             // sqlQuey.append(" AND m.USER_ID='").append(Parameters.SEND_MOBILE).append("'");
-            sqlQuey.append("AND MT.USER_ID IN(SELECT regexp_substr('").append(Parameters.SEND_MOBILE);
+            sqlQuey.append("AND mt.UserId IN(SELECT regexp_substr('").append(Parameters.SEND_MOBILE);
             sqlQuey.append("','[^,]+', 1, level) FROM DUAL ");
             sqlQuey.append(" CONNECT BY regexp_substr('").append(Parameters.SEND_MOBILE).append("', '[^,]+', 1, level) IS NOT NULL)");
         }
 
-        sqlQuey.append(" order by MT.TIME_SEND_REQUEST  asc ");
+        sqlQuey.append(" order by mt.TimeSendRequest  asc ");
         //logger.info("Cau lenh thuc hien=" + sqlQuey.toString());
         List<SmsMT> lstMt = new ArrayList<>();
         SmsMT objMt;
@@ -116,7 +116,7 @@ public class MTDAL {
         try {
             //connection.setAutoCommit(false);
             //long start = System.currentTimeMillis();
-            String sqlUpdateMT = "Update SMS_MT set SYNC_TIME = (SYSDATE+?/24) where REQUEST_ID = ?";
+            String sqlUpdateMT = "Update SmsMt set SyncTime = (SYSDATE+?/24) where RequestId = ?";
             statement = connection.prepareStatement(sqlUpdateMT);
             List<TimerConfigBO> lstTimer = new ArrayList<>();
             TimerConfigBO timerBO = null;
@@ -131,7 +131,7 @@ public class MTDAL {
                     timerBO = new TimerConfigBO();
                     timerBO.setTimerConfigId(objmt.getSMS_TIMER_CONFIG_ID());
                     timerBO.setSchoolId(objmt.getUNIT_ID());
-                    timerBO.setPartitionId(objmt.getUNIT_ID() % 100);
+//                    timerBO.setPartitionId(objmt.getUNIT_ID() % 100);
                     if (!lstTimer.contains(timerBO)) {
                         lstTimer.add(timerBO);
                     }
@@ -141,10 +141,10 @@ public class MTDAL {
 
             //Cap nhat trang thai hen gio gui tin
             if (!lstTimer.isEmpty()) {
-                String sqlUpdateTimer = "UPDATE SMS_TIMER_CONFIG set Status=2,UPDATE_TIME=sysdate WHERE PARTITION_ID=? AND SCHOOL_ID=? and SMS_TIMER_CONFIG_ID=? and Status=1";
+                String sqlUpdateTimer = "UPDATE SmsTimerConfig set Status=2, LastModificationTime=sysdate WHERE SchoolId=? and Id=? and Status=1";
                 statTimer = connection.prepareStatement(sqlUpdateTimer);
                 for (TimerConfigBO timer : lstTimer) {
-                    statTimer.setInt(1, timer.getPartitionId());
+//                    statTimer.setInt(1, timer.getPartitionId());
                     statTimer.setInt(2, timer.getSchoolId());
                     statTimer.setString(3, timer.getTimerConfigId());
                     statTimer.addBatch();
@@ -200,7 +200,7 @@ public class MTDAL {
             //LogUtil.writeInfoLog(logsms, logger, "INFO: thong tin MT  requestID: " + requestID + " historyID: " + historyID + " unitId: " + unitId);
 
             if (sendResult == true) {
-                stmt = connectionThread.prepareCall("{call SP_PROCESS_SEND_SMS(?,?,?,?,?,?,?)}");
+                stmt = connectionThread.prepareCall("{call SpProcessSendSms(?,?,?,?,?,?,?)}");
                 stmt.setString(1, requestID);
                 stmt.setInt(2, 1);// @IS_SUCCESS
                 stmt.setString(3, historyID);
@@ -217,7 +217,7 @@ public class MTDAL {
                 int numRetryWhenFail = retryNum + 1;
 
                 if (numRetryWhenFail >= Parameters.MaxRetryTimes) {
-                    stmt = connectionThread.prepareCall("{call SP_PROCESS_SEND_SMS(?,?,?,?,?,?,?)}");
+                    stmt = connectionThread.prepareCall("{call SpProcessSendSms(?,?,?,?,?,?,?)}");
 
                     stmt.setString(1, requestID);
                     stmt.setInt(2, 0);// @IS_SUCCESS
@@ -232,7 +232,7 @@ public class MTDAL {
                     LogUtil.InfoExt(logger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "UpdateSMSHistory", eventDate, para, "Send Unsuccess SMS");
                 } else {
                     // update row table SMS.MT (retry ++)
-                    stmt = connectionThread.prepareCall("{call SP_PROCESS_SEND_SMS(?,?,?,?,?,?,?)}");
+                    stmt = connectionThread.prepareCall("{call SpProcessSendSms(?,?,?,?,?,?,?)}");
 
                     stmt.setString(1, requestID);
                     stmt.setInt(2, 0);
@@ -283,7 +283,7 @@ public class MTDAL {
             if (connectionLog == null) {
                 return;
             }
-            stmtLog = connectionLog.prepareCall("{call SP_INSERT_SMS (?, ?)}");
+            stmtLog = connectionLog.prepareCall("{call SpInsertSms (?, ?)}");
             stmtLog.setString(1, content);
             stmtLog.setString(2, mobile);
             stmtLog.execute();

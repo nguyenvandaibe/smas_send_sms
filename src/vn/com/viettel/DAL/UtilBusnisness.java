@@ -69,7 +69,7 @@ public class UtilBusnisness {
             }
             //connectionLog.setAutoCommit(false);
             // insert or update
-            stmtLog = connectionLog.prepareCall("{call INSERT_OR_UPDATE_MONITORING (?, ?)}");
+            stmtLog = connectionLog.prepareCall("{call InsertOrUpdateMonitoringWithoutErrorMessage (?, ?)}");
             stmtLog.setString(1, appId);
             stmtLog.setInt(2, Integer.parseInt(ErrorCode));
             stmtLog.execute();
@@ -110,7 +110,7 @@ public class UtilBusnisness {
                 connectionLog = ConnectionPoolManager.getSMSConnection(loger);
             }
 
-            stmtLog = connectionLog.prepareCall("{call INSERT_OR_UPDATE_MONITORING_2 (?, ?,?)}");
+            stmtLog = connectionLog.prepareCall("{call InsertOrUpdateMonitoringHasErrorMessage (?, ?,?)}");
             stmtLog.setString(1, appId);
             stmtLog.setInt(2, 0);
             stmtLog.setString(3, errorMessage);
@@ -162,10 +162,10 @@ public class UtilBusnisness {
                 connectionLog = ConnectionPoolManager.getSMSConnection(logMM);
             }
 
-            String sql = "SELECT app_id FROM monitoring_app "
-                    + "WHERE error_code_id = 0 "
-                    + "AND (update_time + (?/1440)) <= sysdate "
-                    + "AND app_id = ?";
+            String sql = "SELECT AppId FROM MonitoringApp "
+                    + "WHERE ErrorCodeId = 0 "
+                    + "AND (UpdateTime + (?/1440)) <= SYSDATE() "
+                    + "AND AppId = ?";
 
             if (Parameters.DBTimeAlive == 0) {
                 Parameters.DBTimeAlive = 30;
@@ -212,15 +212,15 @@ public class UtilBusnisness {
             //connectionLog.setAutoCommit(false);
 
             // MM not alive
-            String sql1 = "SELECT app_id FROM monitoring_app "
-                    + "WHERE error_code_id = 0 "
-                    + "AND (update_time + (?/1440)) < sysdate";
+            String sql1 = "SELECT AppId FROM MonitoringApp "
+                    + "WHERE ErrorCodeId = 0 "
+                    + "AND (UpdateTime + (?/1440)) < SYSDATE()";
 
             statementLog = connectionLog.prepareStatement(sql1);
             statementLog.setInt(1, Parameters.DBTimeAlive);
             rsLog = statementLog.executeQuery();
             while (rsLog.next()) {
-                String AppID = rsLog.getString("app_id");
+                String AppID = rsLog.getString("AppId");
                 String para = AppID + " not alive";
                 LogUtil.InfoExt(logMM, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "doSendLogMM", CommonUtils.getDateNow(), para, "Null");
             }
@@ -232,16 +232,16 @@ public class UtilBusnisness {
                     + "?"
                     + ", m.UpdateTime) >= GETDATE()";
              */
-            String sql2 = "SELECT a.app_id, b.content FROM monitoring_app a "
-                    + "JOIN monitoring_error_code b on a.error_code_id = b.monitoring_error_code "
-                    + "WHERE error_code_id <> 0 "
-                    + "AND (update_time + (?/1440)) >= sysdate";
+            String sql2 = "SELECT a.AppId, b.Content FROM MonitoringApp a "
+                    + "JOIN MonitoringErrorCode b on a.ErrorCodeID = b.MonitoringErrorCode "
+                    + "WHERE ErrorCodeID <> 0 "
+                    + "AND (UpdateTime + (?/1440)) >= SYSDATE()";
             statementLog = connectionLog.prepareStatement(sql2);
             statementLog.setInt(1, Parameters.DBTimeAlive);
             rsLog = statementLog.executeQuery();
             while (rsLog.next()) {
-                String AppID = rsLog.getString("app_id");
-                String Contents = rsLog.getString("content");
+                String AppID = rsLog.getString("AppId");
+                String Contents = rsLog.getString("Content");
                 LogUtil.InfoExt(loger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "doSendLogMM", CommonUtils.getDateNow(), AppID + " " + Contents, "Null");
             }
         } catch (SQLException | NumberFormatException e) {
@@ -280,7 +280,7 @@ public class UtilBusnisness {
                 connection = ConnectionPoolManager.getSMSConnection(loger);
             }
 
-            String sql = "SELECT * FROM APP_SYS_CONFIG where SYS_CONFIG_ID=3";
+            String sql = "SELECT * FROM AppSysConfig where SysConfigId=3";
 
             statement = connection.prepareStatement(sql);
             rs = statement.executeQuery();
@@ -288,7 +288,7 @@ public class UtilBusnisness {
                 return;
             }
 
-            String mobile = rs.getString("CONFIG_VALUE");
+            String mobile = rs.getString("ConfigValue");
             if ("".equals(mobile)) {
                 return;
             }

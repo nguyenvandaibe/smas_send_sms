@@ -48,7 +48,7 @@ public class PreNumberTelcoDAL {
                 connection = ConnectionPoolManager.getSMSConnection(loger);
             }
 
-            String sql = "SELECT * FROM PRE_NUMBER_TELCO where PREFIX_TRANS is not null AND is_active=1";
+            String sql = "SELECT * FROM PreNumberTelco where PrefixTrans is not null AND IsActive=1";
 
             statement = connection.prepareStatement(sql);
             rs = statement.executeQuery();
@@ -61,12 +61,12 @@ public class PreNumberTelcoDAL {
 
             while (rs.next()) {
                 objPre = new PreNumberTelco();
-                objPre.setPREFIX_NUMBER_ID(rs.getInt("PREFIX_NUMBER_ID"));
-                objPre.setPREFIX_NUMBER(rs.getString("PREFIX_NUMBER"));
-                objPre.setTELCO(rs.getString("TELCO"));
-                objPre.setPREFIX_TYPE(rs.getInt("PREFIX_TYPE"));
-                objPre.setPREFIX_TRANS(rs.getString("PREFIX_TRANS"));
-                objPre.setIS_ACTIVE(rs.getBoolean("IS_ACTIVE"));
+                objPre.setPREFIX_NUMBER_ID(rs.getInt("Id"));
+                objPre.setPREFIX_NUMBER(rs.getString("PrefixNumber"));
+                objPre.setTELCO(rs.getString("TelcoName"));
+                objPre.setPREFIX_TYPE(rs.getInt("PrefixType"));
+                objPre.setPREFIX_TRANS(rs.getString("PrefixTrans"));
+                objPre.setIS_ACTIVE(rs.getBoolean("IsActive"));
                 lstVal.add(objPre);
             }
 
@@ -107,7 +107,7 @@ public class PreNumberTelcoDAL {
                 connection = ConnectionPoolManager.getSMSConnection(loger);
             }
 
-            String sql = "SELECT * FROM PRE_NUMBER_TELCO where is_active=1";
+            String sql = "SELECT * FROM PreNumberTelco where IsActive=1";
 
             statement = connection.prepareStatement(sql);
             rs = statement.executeQuery();
@@ -120,12 +120,12 @@ public class PreNumberTelcoDAL {
 
             while (rs.next()) {
                 objPre = new PreNumberTelco();
-                objPre.setPREFIX_NUMBER_ID(rs.getInt("PREFIX_NUMBER_ID"));
-                objPre.setPREFIX_NUMBER(rs.getString("PREFIX_NUMBER"));
-                objPre.setTELCO(rs.getString("TELCO"));
-                objPre.setPREFIX_TYPE(rs.getInt("PREFIX_TYPE"));
-                objPre.setPREFIX_TRANS(rs.getString("PREFIX_TRANS"));
-                objPre.setIS_ACTIVE(rs.getBoolean("IS_ACTIVE"));
+                objPre.setPREFIX_NUMBER_ID(rs.getInt("Id"));
+                objPre.setPREFIX_NUMBER(rs.getString("PrefixNumber"));
+                objPre.setTELCO(rs.getString("TelcoName"));
+                objPre.setPREFIX_TYPE(rs.getInt("PrefixType"));
+                objPre.setPREFIX_TRANS(rs.getString("PrefixTrans"));
+                objPre.setIS_ACTIVE(rs.getBoolean("IsActive"));
                 lstVal.add(objPre);
             }
 
