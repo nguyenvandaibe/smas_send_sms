@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="lib/sqljdbc4.jar"/>
+	<classpathentry kind="lib" path="lib/utils.jar"/>
+	<classpathentry kind="lib" path="lib/vaspapi.jar"/>
+	<classpathentry kind="lib" path="lib/commons-net-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/mmserver-3.2.7.jar"/>
+	<classpathentry kind="lib" path="lib/wrapper.jar"/>
+	<classpathentry kind="src" path="/vn.com.viettel.bank.sms.client"/>
+	<classpathentry kind="lib" path="lib/c3p0-0.9.5-pre8.jar"/>
+	<classpathentry kind="lib" path="lib/mchange-commons-java-0.2.7.jar"/>
+	<classpathentry kind="lib" path="lib/vn.com.viettel.bank.sms.client.jar"/>
+	<classpathentry kind="lib" path="lib/mail.jar"/>
+	<classpathentry kind="lib" path="lib/scp.jar"/>
+	<classpathentry kind="lib" path="lib/smpplib.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="lib/vn.com.viettel.bulk.smsbrandname.client.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

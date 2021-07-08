@@ -1,0 +1,236 @@
+20/06/2014 11:38:47 - 1.Connect DB SMS error
+20/06/2014 11:38:47 - ERROR: function getSMSConnection: An attempt by a client to checkout a Connection has timed out.
+java.sql.SQLException: An attempt by a client to checkout a Connection has timed out.
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:118)
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:77)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:688)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:140)
+	at com.viettel.dataSource.SMSDataSource.getConnection(SMSDataSource.java:48)
+	at com.viettel.dataSource.ConnectionPoolManager.getSMSConnection(ConnectionPoolManager.java:19)
+	at com.viettel.smas.SmasApplication$Transaction.<init>(SmasApplication.java:375)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:80)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: com.mchange.v2.resourcepool.TimeoutException: A client timed out while waiting to acquire a resource from com.mchange.v2.resourcepool.BasicResourcePool@13405f43 -- timeout at awaitAvailable()
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1420)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:606)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:526)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutAndMarkConnectionInUse(C3P0PooledConnectionPool.java:756)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:683)
+	... 7 more
+20/06/2014 11:39:48 - 1.Connect DB Log error
+20/06/2014 11:39:48 - ERROR: function getLogConnection: An attempt by a client to checkout a Connection has timed out.
+java.sql.SQLException: An attempt by a client to checkout a Connection has timed out.
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:118)
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:77)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:688)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:140)
+	at com.viettel.dataSource.LogDataSource.getConnection(LogDataSource.java:47)
+	at com.viettel.dataSource.ConnectionPoolManager.getLogConnection(ConnectionPoolManager.java:35)
+	at com.viettel.smas.SmasApplication$Transaction.<init>(SmasApplication.java:376)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:80)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: com.mchange.v2.resourcepool.TimeoutException: A client timed out while waiting to acquire a resource from com.mchange.v2.resourcepool.BasicResourcePool@69950b4 -- timeout at awaitAvailable()
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1420)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:606)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:526)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutAndMarkConnectionInUse(C3P0PooledConnectionPool.java:756)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:683)
+	... 7 more
+20/06/2014 11:41:43 - 1.Connect DB Log error
+20/06/2014 11:41:43 - ERROR: function getLogConnection: An attempt by a client to checkout a Connection has timed out.
+java.sql.SQLException: An attempt by a client to checkout a Connection has timed out.
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:118)
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:77)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:688)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:140)
+	at com.viettel.dataSource.LogDataSource.getConnection(LogDataSource.java:47)
+	at com.viettel.dataSource.ConnectionPoolManager.getLogConnection(ConnectionPoolManager.java:35)
+	at com.viettel.smas.SmasApplication$Transaction.writeLogMonitoring(SmasApplication.java:482)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:114)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: com.mchange.v2.resourcepool.TimeoutException: A client timed out while waiting to acquire a resource from com.mchange.v2.resourcepool.BasicResourcePool@69950b4 -- timeout at awaitAvailable()
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1420)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:606)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:526)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutAndMarkConnectionInUse(C3P0PooledConnectionPool.java:756)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:683)
+	... 7 more
+20/06/2014 11:41:43 - Cannot write log monitoring: null
+java.lang.NullPointerException
+	at com.viettel.smas.SmasApplication$Transaction.writeLogMonitoring(SmasApplication.java:484)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:114)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+20/06/2014 11:41:43 - ERROR: Cannot rollback write log monitoring:null
+java.lang.NullPointerException
+	at com.viettel.smas.SmasApplication$Transaction.writeLogMonitoring(SmasApplication.java:497)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:114)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+20/06/2014 11:41:43 - Cannot close connect write log monitoring:null
+java.lang.NullPointerException
+	at com.viettel.smas.SmasApplication$Transaction.writeLogMonitoring(SmasApplication.java:506)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:114)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+20/06/2014 11:44:09 - 1.Connect DB SMS error
+20/06/2014 11:44:09 - ERROR: function getSMSConnection: An attempt by a client to checkout a Connection has timed out.
+java.sql.SQLException: An attempt by a client to checkout a Connection has timed out.
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:118)
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:77)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:688)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:140)
+	at com.viettel.dataSource.SMSDataSource.getConnection(SMSDataSource.java:48)
+	at com.viettel.dataSource.ConnectionPoolManager.getSMSConnection(ConnectionPoolManager.java:19)
+	at com.viettel.smas.SmasApplication$Transaction.<init>(SmasApplication.java:375)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:80)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: com.mchange.v2.resourcepool.TimeoutException: A client timed out while waiting to acquire a resource from com.mchange.v2.resourcepool.BasicResourcePool@2acca551 -- timeout at awaitAvailable()
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1420)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:606)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:526)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutAndMarkConnectionInUse(C3P0PooledConnectionPool.java:756)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:683)
+	... 7 more
+20/06/2014 11:45:09 - 1.Connect DB Log error
+20/06/2014 11:45:09 - ERROR: function getLogConnection: An attempt by a client to checkout a Connection has timed out.
+java.sql.SQLException: An attempt by a client to checkout a Connection has timed out.
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:118)
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:77)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:688)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:140)
+	at com.viettel.dataSource.LogDataSource.getConnection(LogDataSource.java:47)
+	at com.viettel.dataSource.ConnectionPoolManager.getLogConnection(ConnectionPoolManager.java:35)
+	at com.viettel.smas.SmasApplication$Transaction.<init>(SmasApplication.java:376)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:80)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: com.mchange.v2.resourcepool.TimeoutException: A client timed out while waiting to acquire a resource from com.mchange.v2.resourcepool.BasicResourcePool@3e26bf4c -- timeout at awaitAvailable()
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1420)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:606)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:526)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutAndMarkConnectionInUse(C3P0PooledConnectionPool.java:756)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:683)
+	... 7 more
+20/06/2014 11:46:09 - 1.Connect DB Log error
+20/06/2014 11:46:09 - ERROR: function getLogConnection: An attempt by a client to checkout a Connection has timed out.
+java.sql.SQLException: An attempt by a client to checkout a Connection has timed out.
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:118)
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:77)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:688)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:140)
+	at com.viettel.dataSource.LogDataSource.getConnection(LogDataSource.java:47)
+	at com.viettel.dataSource.ConnectionPoolManager.getLogConnection(ConnectionPoolManager.java:35)
+	at com.viettel.smas.SmasApplication$Transaction.writeLogMonitoring(SmasApplication.java:482)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:111)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: com.mchange.v2.resourcepool.TimeoutException: A client timed out while waiting to acquire a resource from com.mchange.v2.resourcepool.BasicResourcePool@3e26bf4c -- timeout at awaitAvailable()
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1420)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:606)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:526)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutAndMarkConnectionInUse(C3P0PooledConnectionPool.java:756)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:683)
+	... 7 more
+20/06/2014 11:46:09 - Cannot write log monitoring: null
+java.lang.NullPointerException
+	at com.viettel.smas.SmasApplication$Transaction.writeLogMonitoring(SmasApplication.java:484)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:111)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+20/06/2014 11:46:09 - ERROR: Cannot rollback write log monitoring:null
+java.lang.NullPointerException
+	at com.viettel.smas.SmasApplication$Transaction.writeLogMonitoring(SmasApplication.java:497)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:111)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+20/06/2014 11:46:09 - Cannot close connect write log monitoring:null
+java.lang.NullPointerException
+	at com.viettel.smas.SmasApplication$Transaction.writeLogMonitoring(SmasApplication.java:506)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:111)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+20/06/2014 11:50:39 - 1.Connect DB SMS error
+20/06/2014 11:50:39 - ERROR: function getSMSConnection: An attempt by a client to checkout a Connection has timed out.
+java.sql.SQLException: An attempt by a client to checkout a Connection has timed out.
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:118)
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:77)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:688)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:140)
+	at com.viettel.dataSource.SMSDataSource.getConnection(SMSDataSource.java:48)
+	at com.viettel.dataSource.ConnectionPoolManager.getSMSConnection(ConnectionPoolManager.java:19)
+	at com.viettel.smas.SmasApplication$Transaction.<init>(SmasApplication.java:375)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:80)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: com.mchange.v2.resourcepool.TimeoutException: A client timed out while waiting to acquire a resource from com.mchange.v2.resourcepool.BasicResourcePool@3651a783 -- timeout at awaitAvailable()
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1420)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:606)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:526)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutAndMarkConnectionInUse(C3P0PooledConnectionPool.java:756)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:683)
+	... 7 more
+20/06/2014 11:51:39 - 1.Connect DB Log error
+20/06/2014 11:51:39 - ERROR: function getLogConnection: An attempt by a client to checkout a Connection has timed out.
+java.sql.SQLException: An attempt by a client to checkout a Connection has timed out.
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:118)
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:77)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:688)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:140)
+	at com.viettel.dataSource.LogDataSource.getConnection(LogDataSource.java:47)
+	at com.viettel.dataSource.ConnectionPoolManager.getLogConnection(ConnectionPoolManager.java:35)
+	at com.viettel.smas.SmasApplication$Transaction.<init>(SmasApplication.java:376)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:80)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: com.mchange.v2.resourcepool.TimeoutException: A client timed out while waiting to acquire a resource from com.mchange.v2.resourcepool.BasicResourcePool@45b11398 -- timeout at awaitAvailable()
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1420)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:606)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:526)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutAndMarkConnectionInUse(C3P0PooledConnectionPool.java:756)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:683)
+	... 7 more
+20/06/2014 11:53:04 - 1.Connect DB SMS error
+20/06/2014 11:53:04 - ERROR: function getSMSConnection: An attempt by a client to checkout a Connection has timed out.
+java.sql.SQLException: An attempt by a client to checkout a Connection has timed out.
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:118)
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:77)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:688)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:140)
+	at com.viettel.dataSource.SMSDataSource.getConnection(SMSDataSource.java:48)
+	at com.viettel.dataSource.ConnectionPoolManager.getSMSConnection(ConnectionPoolManager.java:19)
+	at com.viettel.smas.SmasApplication$Transaction.<init>(SmasApplication.java:375)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:80)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: com.mchange.v2.resourcepool.TimeoutException: A client timed out while waiting to acquire a resource from com.mchange.v2.resourcepool.BasicResourcePool@3651a783 -- timeout at awaitAvailable()
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1420)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:606)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:526)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutAndMarkConnectionInUse(C3P0PooledConnectionPool.java:756)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:683)
+	... 7 more
+20/06/2014 11:54:04 - 1.Connect DB Log error
+20/06/2014 11:54:04 - ERROR: function getLogConnection: An attempt by a client to checkout a Connection has timed out.
+java.sql.SQLException: An attempt by a client to checkout a Connection has timed out.
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:118)
+	at com.mchange.v2.sql.SqlUtils.toSQLException(SqlUtils.java:77)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:688)
+	at com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource.getConnection(AbstractPoolBackedDataSource.java:140)
+	at com.viettel.dataSource.LogDataSource.getConnection(LogDataSource.java:47)
+	at com.viettel.dataSource.ConnectionPoolManager.getLogConnection(ConnectionPoolManager.java:35)
+	at com.viettel.smas.SmasApplication$Transaction.<init>(SmasApplication.java:376)
+	at com.viettel.smas.ProcessThreadSendSMS.process(ProcessThreadSendSMS.java:80)
+	at com.viettel.mmserver.base.ProcessThread.run(ProcessThread.java:126)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: com.mchange.v2.resourcepool.TimeoutException: A client timed out while waiting to acquire a resource from com.mchange.v2.resourcepool.BasicResourcePool@45b11398 -- timeout at awaitAvailable()
+	at com.mchange.v2.resourcepool.BasicResourcePool.awaitAvailable(BasicResourcePool.java:1420)
+	at com.mchange.v2.resourcepool.BasicResourcePool.prelimCheckoutResource(BasicResourcePool.java:606)
+	at com.mchange.v2.resourcepool.BasicResourcePool.checkoutResource(BasicResourcePool.java:526)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutAndMarkConnectionInUse(C3P0PooledConnectionPool.java:756)
+	at com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool.checkoutPooledConnection(C3P0PooledConnectionPool.java:683)
+	... 7 more
