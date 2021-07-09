@@ -77,21 +77,30 @@ public class SmasMysqlConnectionPool {
             sysProperties.load(is);
             Set<String> keys = sysProperties.stringPropertyNames();
 
-            for (String key : keys) {
-                if (key.startsWith("c3p0")) {
-                    BeanUtils.setProperty(cpds, key.substring("c3p0.".length()), sysProperties.getProperty(key));
-                    //Neu la key CSDL thi thuc hien ma hoa
-                    /*if (Parameters.Encrypt && (key.contains(C3P0_DRIVER_CLASS)
-                            || key.contains(C3P0_JDBC_URL)
-                            || key.contains(C3P0_USER)
-                            || key.contains(C3P0_PASSWORD))) {
-                        String value = PassTranformer.decrypt(sysProperties.getProperty(key));
-                        BeanUtils.setProperty(cpds, key.substring("c3p0.".length()), value);
-                    } else {
+//            for (String key : keys) {
+//                if (key.startsWith("c3p0")) {
+//                    BeanUtils.setProperty(cpds, key.substring("c3p0.".length()), sysProperties.getProperty(key));
+//                    //Neu la key CSDL thi thuc hien ma hoa
+//                    /*if (Parameters.Encrypt && (key.contains(C3P0_DRIVER_CLASS)
+//                            || key.contains(C3P0_JDBC_URL)
+//                            || key.contains(C3P0_USER)
+//                            || key.contains(C3P0_PASSWORD))) {
+//                        String value = PassTranformer.decrypt(sysProperties.getProperty(key));
+//                        BeanUtils.setProperty(cpds, key.substring("c3p0.".length()), value);
+//                    } else {
+//
+//                    }*/
+//                }
+//            }
 
-                    }*/
-                }
-            }
+            cpds.setDriverClass("com.mysql.cj.jdbc.Driver");
+            cpds.setJdbcUrl("jdbc:mysql://118.70.148.117:3306/smas_customer");
+            cpds.setUser("smas");
+            cpds.setPassword("Smas#2020");
+            cpds.setMinPoolSize(2);
+            cpds.setInitialPoolSize(2);
+            cpds.setMaxPoolSize(4);
+
             LogUtil.InfoExt(log, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "initC3P0", eventDate, "Null", "- C3P0 loaded with: " + cpds.getProperties());
             // Check database driver
             cpds.setMinPoolSize(Parameters.CONNECTION_MINPOOLSIZE);
@@ -110,8 +119,8 @@ public class SmasMysqlConnectionPool {
         } catch (ClassNotFoundException e) {
             LogUtil.ErrorExt(log, CLASS_NAME, "initC3P0", CommonUtils.getDateNow(), "No JDBC driver found, please check the C3P0 configuration part.", e);
             //TODO process with critial error
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            LogUtil.ErrorExt(log, CLASS_NAME, "initC3P0", CommonUtils.getDateNow(), "Invalid properties in the C3P0 configuration part.", e);
+//        } catch (IllegalAccessException | InvocationTargetException e) {
+//            LogUtil.ErrorExt(log, CLASS_NAME, "initC3P0", CommonUtils.getDateNow(), "Invalid properties in the C3P0 configuration part.", e);
             //TODO process with critial error
         } finally {
             if (is != null) {
