@@ -51,17 +51,17 @@ public class GlobalConstant {
     public final static String PROCESS_BULK_SMS="SMS_BRANDNAME_NONE_UNICODE";
     public final static String PROCESS_SMS_BRANDNAME="SMS_BRANDNAME_UNICODE";
     
-     public final static String LOG_CONFIG_PATH="../etc/log4j.conf";
+    public final static String LOG_CONFIG_PATH="D:\\ITSOL\\Viettel\\smas_send_sms\\etc\\log4j.conf";
      //public final static String CONFIG_PATH="../config/general.cfg";
-     public static final String GENERAL_CONFIG_PATH = "../etc/general.cfg";
-     public static final String SMAS_CORE_CONFIG_PATH = "../etc/oracle_smas_core.conf";
-    //public final static String GENERAL_CONFIG_PATH="D:\\VIETTEL\\SMAS_Sources\\1_SVN_Sources\\SVN_207\\2.Tools\\SMS_SENDER\\etc\\general.cfg";
-    //public final static String SMAS_CORE_CONFIG_PATH="D:\\VIETTEL\\SMAS_Sources\\1_SVN_Sources\\SVN_207\\2.Tools\\SMS_SENDER\\etc\\oracle_smas_core.conf";
+//     public static final String GENERAL_CONFIG_PATH = "..\\..\\..\\..\\..\\etc\\general.cfg";
+//     public static final String SMAS_CORE_CONFIG_PATH = "..\\..\\..\\..\\..\\etc\\oracle_smas_core.conf";
+    public final static String GENERAL_CONFIG_PATH="D:\\ITSOL\\Viettel\\smas_send_sms\\etc\\general.cfg";
+    public final static String SMAS_CORE_CONFIG_PATH="D:\\ITSOL\\Viettel\\smas_send_sms\\etc\\oracle_smas_core.conf";
 
-     public final static String ERR_DUPLICATE_MESSAGE="DUPLICATE MESSAGE";
+    public final static String ERR_DUPLICATE_MESSAGE="DUPLICATE MESSAGE";
      
-     /**
-      * Thoi gian nghi 10s cho cac tin nhan bi cat thanh nhieu tin
-      */
-     public final static long SLEEP_TIME_2_SMS=10000;
+    /**
+    * Thoi gian nghi 10s cho cac tin nhan bi cat thanh nhieu tin
+    */
+    public final static long SLEEP_TIME_2_SMS=10000;
 }
