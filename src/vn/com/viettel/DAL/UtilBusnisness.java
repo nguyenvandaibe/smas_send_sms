@@ -5,20 +5,13 @@
  */
 package vn.com.viettel.DAL;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
 import org.apache.log4j.Logger;
 import vn.com.viettel.dataSource.ConnectionPoolManager;
-import vn.com.viettel.util.CommonUtils;
-import vn.com.viettel.util.GlobalConstant;
-import vn.com.viettel.util.LogUtil;
-import vn.com.viettel.util.Parameters;
-import vn.com.viettel.util.StringUtil;
+import vn.com.viettel.util.*;
+
+import java.sql.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -280,7 +273,7 @@ public class UtilBusnisness {
                 connection = ConnectionPoolManager.getSMSConnection(loger);
             }
 
-            String sql = "SELECT * FROM AppSysConfig where SysConfigId=3";
+            String sql = "SELECT * FROM AppSysConfig where Id=3";
 
             statement = connection.prepareStatement(sql);
             rs = statement.executeQuery();

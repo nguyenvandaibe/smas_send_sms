@@ -5,17 +5,6 @@
  */
 package vn.com.viettel.DAL;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import org.apache.log4j.Logger;
 import vn.com.viettel.BO.SmsMT;
 import vn.com.viettel.BO.TimerConfigBO;
@@ -24,6 +13,14 @@ import vn.com.viettel.util.CommonUtils;
 import vn.com.viettel.util.GlobalConstant;
 import vn.com.viettel.util.LogUtil;
 import vn.com.viettel.util.Parameters;
+
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -42,8 +39,8 @@ public class MTDAL {
 
         sqlQuey.append("SELECT mt.* FROM SmsMt mt ");
         sqlQuey.append("LEFT JOIN SmsTimerConfig stc ON mt.SmsTimerConfigId=stc.Id ");
-        sqlQuey.append("WHERE (mt.SyncTime IS NULL OR mt.SyncTime < SYSDATE) ");
-        sqlQuey.append("AND (mt.SmsTimerConfigId IS NULL OR (mt.SmsTimerConfigId IS NOT NULL AND stc.SendTime < SYSDATE))");
+        sqlQuey.append("WHERE (mt.SyncTime IS NULL OR mt.SyncTime < SYSDATE()) ");
+        sqlQuey.append("AND (mt.SmsTimerConfigId IS NULL OR (mt.SmsTimerConfigId IS NOT NULL AND stc.SendTime < SYSDATE()))");
 
         //sqlQuey.append((Parameters.MaxSMSInSession == -1) ? "" : "TOP " + Parameters.MaxSMSInSession);
         /*sqlQuey.append(" m.* FROM [SMS].[MT] m");
@@ -55,7 +52,7 @@ public class MTDAL {
                 .append(" AND (tc.TimerConfigID is null OR ").append("( tc.TimerConfigID is not null AND tc.SendTime<=GETDATE()))");
          */
         int rowNum = Parameters.MaxSMSInSession > 0 ? Parameters.MaxSMSInSession : 1000;
-        sqlQuey.append(" AND  ROWNUM<=").append(rowNum);
+//        sqlQuey.append(" AND  ROW_NUMBER() <= ").append(rowNum);
         sqlQuey.append(" AND  mt.RetryNum <").append(Parameters.MaxRetryTimes);
         if (node.length() > 0) {
             sqlQuey.append(" AND MOD(TO_NUMBER(SUBSTR(mt.UserId,-1,1)),").append(Parameters.CheckListNodes.length).append(")");
@@ -67,7 +64,7 @@ public class MTDAL {
         Calendar cal = Calendar.getInstance();
         Date userDate = parser.parse(parser.format(cal.getTime()));
 
-        //Neu thoi gian gui tu 
+        //Neu thoi gian gui tu
         if (contentType == GlobalConstant.SEND_UNICODE) {
             sqlQuey.append(" AND mt.ContentType = 1 ");
         } else if (contentType == GlobalConstant.SEND_NORMAL) {
@@ -79,14 +76,14 @@ public class MTDAL {
                 sqlQuey.append(" AND (mt.ContentType is  not null AND mt.ContentType != 1)");
             }
         }
-        if (!"".equals(Parameters.SEND_MOBILE) && Parameters.SEND_MOBILE.length() > 0) {
-            // sqlQuey.append(" AND m.USER_ID='").append(Parameters.SEND_MOBILE).append("'");
-            sqlQuey.append("AND mt.UserId IN(SELECT regexp_substr('").append(Parameters.SEND_MOBILE);
-            sqlQuey.append("','[^,]+', 1, level) FROM DUAL ");
-            sqlQuey.append(" CONNECT BY regexp_substr('").append(Parameters.SEND_MOBILE).append("', '[^,]+', 1, level) IS NOT NULL)");
-        }
+//         if (!"".equals(Parameters.SEND_MOBILE) && Parameters.SEND_MOBILE.length() > 0) {
+//             // sqlQuey.append(" AND m.USER_ID='").append(Parameters.SEND_MOBILE).append("'");
+//             sqlQuey.append("AND mt.UserId IN(SELECT regexp_substr('").append(Parameters.SEND_MOBILE);
+//             sqlQuey.append("','[^,]+', 1, level) FROM DUAL ");
+//             sqlQuey.append(" CONNECT BY regexp_substr('").append(Parameters.SEND_MOBILE).append("', '[^,]+', 1, level) IS NOT NULL)");
+//         }
 
-        sqlQuey.append(" order by mt.TimeSendRequest  asc ");
+         sqlQuey.append(" order by mt.TimeSendRequest  asc ");
         //logger.info("Cau lenh thuc hien=" + sqlQuey.toString());
         List<SmsMT> lstMt = new ArrayList<>();
         SmsMT objMt;
