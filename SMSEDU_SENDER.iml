@@ -27,7 +27,7 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="sqljdbc4.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/sqljdbc4.jar!/" />
@@ -36,7 +36,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="utils.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/utils.jar!/" />
@@ -45,7 +45,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="vaspapi.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/vaspapi.jar!/" />
@@ -54,7 +54,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="commons-net-3.1.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/commons-net-3.1.jar!/" />
@@ -63,7 +63,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="mmserver-3.2.7.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/mmserver-3.2.7.jar!/" />
@@ -72,7 +72,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="wrapper.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/wrapper.jar!/" />
@@ -81,8 +81,8 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="vn.com.viettel.bank.sms.client" />
-    <orderEntry type="module-library">
+    <orderEntry type="module" module-name="vn.com.viettel.bank.sms.client" exported="" />
+    <orderEntry type="module-library" exported="">
       <library name="c3p0-0.9.5-pre8.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/c3p0-0.9.5-pre8.jar!/" />
@@ -91,7 +91,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="mchange-commons-java-0.2.7.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/mchange-commons-java-0.2.7.jar!/" />
@@ -100,7 +100,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="vn.com.viettel.bank.sms.client.jar">
         <CLASSES>
           <root url="file://lib/vn.com.viettel.bank.sms.client.jar" />
@@ -109,7 +109,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="mail.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/mail.jar!/" />
@@ -118,7 +118,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="scp.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/scp.jar!/" />
@@ -127,7 +127,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="smpplib.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/smpplib.jar!/" />
@@ -136,7 +136,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="log4j-1.2.17.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/log4j-1.2.17.jar!/" />
@@ -145,7 +145,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="vn.com.viettel.bulk.smsbrandname.client.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/vn.com.viettel.bulk.smsbrandname.client.jar!/" />
@@ -154,7 +154,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="vn.com.viettel.bulkNonUnicode.sms.client.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/vn.com.viettel.bulkNonUnicode.sms.client.jar!/" />
@@ -163,7 +163,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="viettelsecurity.2.0.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/viettelsecurity.2.0.jar!/" />
@@ -172,7 +172,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="commons-beanutils-1.8.3.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/commons-beanutils-1.8.3.jar!/" />
@@ -181,7 +181,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="org-openide-util.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/org-openide-util.jar!/" />
@@ -190,7 +190,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="gson-2.8.1.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/gson-2.8.1.jar!/" />
@@ -199,6 +199,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="mysql-connector-java-8.0.22" level="project" />
+    <orderEntry type="library" exported="" name="mysql-connector-java-8.0.22" level="project" />
   </component>
 </module>
