@@ -52,7 +52,7 @@ public class MTDAL {
                 .append(" AND (tc.TimerConfigID is null OR ").append("( tc.TimerConfigID is not null AND tc.SendTime<=GETDATE()))");
          */
         int rowNum = Parameters.MaxSMSInSession > 0 ? Parameters.MaxSMSInSession : 1000;
-//        sqlQuey.append(" AND  ROW_NUMBER() <= ").append(rowNum);
+        // sqlQuey.append(" AND  LIMIT ").append(rowNum);
         sqlQuey.append(" AND  mt.RetryNum <").append(Parameters.MaxRetryTimes);
         if (node.length() > 0) {
             sqlQuey.append(" AND MOD(TO_NUMBER(SUBSTR(mt.UserId,-1,1)),").append(Parameters.CheckListNodes.length).append(")");
@@ -76,12 +76,18 @@ public class MTDAL {
                 sqlQuey.append(" AND (mt.ContentType is  not null AND mt.ContentType != 1)");
             }
         }
-//         if (!"".equals(Parameters.SEND_MOBILE) && Parameters.SEND_MOBILE.length() > 0) {
-//             // sqlQuey.append(" AND m.USER_ID='").append(Parameters.SEND_MOBILE).append("'");
-//             sqlQuey.append("AND mt.UserId IN(SELECT regexp_substr('").append(Parameters.SEND_MOBILE);
-//             sqlQuey.append("','[^,]+', 1, level) FROM DUAL ");
-//             sqlQuey.append(" CONNECT BY regexp_substr('").append(Parameters.SEND_MOBILE).append("', '[^,]+', 1, level) IS NOT NULL)");
-//         }
+        
+        if (!"".equals(Parameters.SEND_MOBILE) && Parameters.SEND_MOBILE.length() > 0) {
+            // sqlQuey.append(" AND m.USER_ID='").append(Parameters.SEND_MOBILE).append("'");
+
+            /* Các câu truy vấn này không được MySQL hỗ trợ
+            sqlQuey.append("AND mt.UserId IN(SELECT REGEXP_SUBSTR('").append(Parameters.SEND_MOBILE);
+            sqlQuey.append("','[^,]+', 1, level) FROM DUAL ");
+            sqlQuey.append(" CONNECT BY REGEXP_SUBSTR('").append(Parameters.SEND_MOBILE).append("', '[^,]+', 1, level) IS NOT NULL)");
+            */
+
+            sqlQuey.append("AND mt.UserId IN (").append(Parameters.SEND_MOBILE).append(")");
+        }
 
          sqlQuey.append(" order by mt.TimeSendRequest  asc ");
         //logger.info("Cau lenh thuc hien=" + sqlQuey.toString());
