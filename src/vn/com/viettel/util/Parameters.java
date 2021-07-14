@@ -1,6 +1,9 @@
 package vn.com.viettel.util;
 
-import com.viettel.security.PassTranformer;
+import org.apache.log4j.Logger;
+
+import javax.crypto.*;
+import javax.crypto.spec.DESKeySpec;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -11,15 +14,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
-import javax.crypto.BadPaddingException;
-
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESKeySpec;
-import org.apache.log4j.Logger;
 
 public class Parameters {
 
@@ -88,7 +82,7 @@ public class Parameters {
     public static Date TIMER_CONFIG_START;
     public static Date TIMER_CONFIG_END;
     public static int TIMER_CONFIG_DAY;
-    public static boolean IS_BULK_SMS = false;
+    public static boolean IS_BULK_SMS = true;
 
     //public static boolean TRANS_NUMBER_11_TO_10 = false;
     
@@ -127,7 +121,8 @@ public class Parameters {
             }
             FromTime = properties.getProperty("FROM.TIME");
             ToTime = properties.getProperty("TO.TIME");
-            IS_BULK_SMS = Boolean.parseBoolean(properties.getProperty("SMS.BULK_SMS"));
+//            IS_BULK_SMS = Boolean.parseBoolean(properties.getProperty("SMS.BULK_SMS"));
+            IS_BULK_SMS = true;
             SimpleDateFormat parser = new SimpleDateFormat("HH:mm");
             try {
 

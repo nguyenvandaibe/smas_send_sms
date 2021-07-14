@@ -51,10 +51,16 @@ public class BulkSMSApplication {
         boolean res = false;
         String para = "Mobile=" + isdn + "sms=" + sms + " serviceID=" + serviceID;
         Date eventDate = CommonUtils.getDateNow();
+        LogUtil.InfoExt(log, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "sendSMS", eventDate, para, "Gui tin nhan qua BulkSMS");
         try {
             if (Parameters.IS_BULK_SMS) {
 
-                ResultBO ret = SmsBulkNonUnicodeWs.sendSms("1", isdn, isdn, serviceID, sms, false);
+                ResultBO ret = SmsBulkNonUnicodeWs.sendSms("39fdb10a-5a5f-ed3a-77ae-24b74c61102a",
+                        "0379478886",
+                        "39fdb0ff-4320-7559-8915-a76aca9b599d",
+                        "SMAS",
+                        "SMS kiem thu",
+                        false);
 
                 if (ret != null) {
                     if (new Long(1).equals(ret.getResult())) {
@@ -70,7 +76,7 @@ public class BulkSMSApplication {
                 }
             } else {
                 //Gui tin nhan qua smsbrandName
-                Result ret = SmsBrandNameWs.sendSms("1", isdn, isdn, serviceID, sms, false);
+                Result ret = SmsBrandNameWs.sendSms("39fdb10a-5a5f-ed3a-77ae-24b74c61102a", isdn, isdn, serviceID, sms, false);
 
                 if (ret != null) {
                     if (new Long(1).equals(ret.getResult())) {
