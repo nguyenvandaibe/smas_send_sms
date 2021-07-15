@@ -8,7 +8,7 @@ package vn.com.viettel.smas;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import vn.com.viettel.BO.SmsQueue;
-import vn.com.viettel.DAL.MTDAL;
+import vn.com.viettel.DAL.QueueDAL;
 import vn.com.viettel.DAL.TimerDAL;
 import vn.com.viettel.DAL.UtilBusnisness;
 import vn.com.viettel.bulk.SmsBrandNameWs;
@@ -69,6 +69,7 @@ public class BulkSMSApplication {
                     } else {
                         String content = ret.getMessage();
                         log.error(ret.getMessage() + " Result: " + ret.getResult().toString());
+                        LogUtil.InfoExt(log, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "sendSMS", eventDate, para, "Gui tin nhan that bai");
                         UtilBusnisness.writeLog(Parameters.CheckListAppID, content,isdn);
                     }
                 } else {
@@ -257,7 +258,8 @@ public class BulkSMSApplication {
 
                 //connection.setAutoCommit(false);
                 //lay danh sach tin nhan khong dau
-                List<SmsQueue> lstSMS = MTDAL.getSmsQueue(connection, statement, rs, node, GlobalConstant.SEND_NORMAL, log);
+//                List<SmsQueue> lstSMS = MTDAL.getSmsQueue(connection, statement, rs, node, GlobalConstant.SEND_NORMAL, log);
+                List<SmsQueue> lstSMS = QueueDAL.getSmsQueue(connection, statement, rs, node, GlobalConstant.SEND_NORMAL, log);
                 if (lstSMS == null || lstSMS.isEmpty()) {
                     //LogUtil.writeInfoLog(logger, "Khong co du lieu gui tin");
                     LogUtil.InfoExt(log, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "doWorkSchool", CommonUtils.getDateNow(), "Node=" + node, "Khong co du lieu");
@@ -265,6 +267,7 @@ public class BulkSMSApplication {
                 }
 
 //                MTDAL.UpdateStatusSMSSending(connection, lstSMS, log);
+                QueueDAL.UpdateStatusSMSSending(connection, lstSMS, log);
                 //this.processSendSMS(lstSMS);
                 SendNotification sendNotification = new SendNotification();
                 for (SmsQueue queueItem : lstSMS) {
@@ -363,6 +366,7 @@ public class BulkSMSApplication {
                         LogUtil.InfoExt(log, GlobalConstant.LOG_TYPE_END_ACTION, CLASS_NAME, "processSendSMS", eventDate, para, "end send sms, result=" + result);
                         //Cap nhat trang thai tin nhan trong history
 //                        MTDAL.UpdateSMSHistory(queueItem, result, serviceID, log);
+                        QueueDAL.UpdateSmsHistory(queueItem, result, serviceID, log);
                         logMM.log(Priority.toPriority(Priority.INFO_INT), "Cap nhat trang thai tin nhan trong history");
 
                         LogUtil.InfoExt(log, "INFO", CLASS_NAME, "processSendSMS", CommonUtils.getDateNow(), para, "OK");

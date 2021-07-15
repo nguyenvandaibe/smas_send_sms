@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="vn.com.viettel.bulkNonUnicode.sms.client">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/vn.com.viettel.bulkNonUnicode.sms.client.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

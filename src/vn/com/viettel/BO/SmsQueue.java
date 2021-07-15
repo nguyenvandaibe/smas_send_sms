@@ -6,6 +6,16 @@ import java.util.Date;
 
 public class SmsQueue {
 
+    private String Id;
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
     private String TenantId;
     private String Mobile;
     private int SmsTypeId;

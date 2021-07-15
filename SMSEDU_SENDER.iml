@@ -200,5 +200,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" exported="" name="mysql-connector-java-8.0.22" level="project" />
+    <orderEntry type="library" name="vn.com.viettel.bulkNonUnicode.sms.client" level="project" />
   </component>
 </module>
