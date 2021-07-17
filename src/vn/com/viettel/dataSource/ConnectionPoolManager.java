@@ -6,13 +6,14 @@
 
 package vn.com.viettel.dataSource;
 
-import java.sql.Connection;
 import org.apache.log4j.Logger;
+
+import java.sql.Connection;
 
 public class ConnectionPoolManager {
 	
 	public static Connection getSMSConnection(Logger logMM) {
-//		Connection connection =SmasOracleConnectionPool.getInstance().getConnection(logMM);
+
 		Connection connection = SmasMysqlConnectionPool.getInstance().getConnection(logMM);
 
 		return connection;

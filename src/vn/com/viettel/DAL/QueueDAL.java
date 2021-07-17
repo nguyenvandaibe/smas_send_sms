@@ -63,7 +63,8 @@ public class QueueDAL {
         }
 
         if (!"".equals(Parameters.SEND_MOBILE) && Parameters.SEND_MOBILE.length() > 0) {
-            sql.append("AND sq.UserId IN (").append(Parameters.SEND_MOBILE).append(")");
+//            TODO: Hỏi anh Chiến về vai trò của UserId
+//            sql.append("AND sq.UserId IN (").append(Parameters.SEND_MOBILE).append(")");
         }
 
         sql.append(" ORDER BY sq.CreationTime DESC");

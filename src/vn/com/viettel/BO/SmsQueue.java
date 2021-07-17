@@ -39,7 +39,6 @@ public class SmsQueue {
     private int YearId;
     private String RequestId;
     private String HistoryRawId;
-    private String CpCode;
 
     public SmsQueue() {
     }
@@ -75,6 +74,16 @@ public class SmsQueue {
         RetryNum = rs.getInt("RetryNum");
         LastDigitNumber = rs.getInt("LastDigitNumber");
         YearId = rs.getInt("YearId");
+        RequestId = rs.getString("RequestId");
+        HistoryRawId = rs.getString("HistoryRawId");
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
     }
 
     public String getTenantId() {
@@ -317,21 +326,12 @@ public class SmsQueue {
         YearId = yearId;
     }
 
-
     public String getRequestId() {
         return RequestId;
     }
 
     public void setRequestId(String requestId) {
         RequestId = requestId;
-    }
-
-    public String getId() {
-        return Id;
-    }
-
-    public void setId(String id) {
-        Id = id;
     }
 
     public String getHistoryRawId() {
@@ -345,13 +345,5 @@ public class SmsQueue {
     public String getPara() {
         String para = "TenantId=" + TenantId;
         return para;
-    }
-
-    public String getCpCode() {
-        return CpCode;
-    }
-
-    public void setCpCode(String cpCode) {
-        CpCode = cpCode;
     }
 }

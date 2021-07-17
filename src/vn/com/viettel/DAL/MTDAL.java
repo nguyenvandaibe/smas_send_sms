@@ -7,7 +7,6 @@ package vn.com.viettel.DAL;
 
 import org.apache.log4j.Logger;
 import vn.com.viettel.BO.SmsMT;
-import vn.com.viettel.BO.SmsQueue;
 import vn.com.viettel.BO.TimerConfigBO;
 import vn.com.viettel.dataSource.ConnectionPoolManager;
 import vn.com.viettel.util.CommonUtils;
@@ -103,39 +102,6 @@ public class MTDAL {
             }
         }
         return lstMt;
-    }
-
-    /**
-     * Lấy ra các hàng trong bảng SmsQueue
-     *
-     * @param connection
-     * @param statement
-     * @param rs
-     * @param node
-     * @param contentType
-     * @param logger
-     * @return
-     * @throws SQLException
-     */
-    public static List<SmsQueue> getSmsQueue(Connection connection, PreparedStatement statement, ResultSet rs, String node, int contentType, Logger logger) throws SQLException {
-        StringBuilder sql = new StringBuilder();
-
-        sql.append("SELECT sq.* FROM SmsQueue sq");
-        sql.append(" LEFT JOIN SmsTimerConfig stc ON sq.SmsTimerConfigId=stc.Id ");
-        sql.append(" WHERE (sq.SyncTime IS NULL OR sq.SyncTime < SYSDATE()) ");
-        sql.append(" ORDER BY sq.CreationTime DESC LIMIT 0, 2");
-
-        List<SmsQueue> listSmsQueue = new ArrayList<>();
-        SmsQueue queueItem;
-        statement = connection.prepareStatement(sql.toString());
-        rs = statement.executeQuery();
-        if (rs != null) {
-            while (rs.next()) {
-                queueItem = new SmsQueue(rs);
-                listSmsQueue.add(queueItem);
-            }
-        }
-        return listSmsQueue;
     }
 
     /**
