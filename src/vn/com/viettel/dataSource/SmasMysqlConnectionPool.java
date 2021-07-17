@@ -93,14 +93,6 @@ public class SmasMysqlConnectionPool {
                 }
             }
 
-//            cpds.setDriverClass("com.mysql.cj.jdbc.Driver");
-//            cpds.setJdbcUrl("jdbc:mysql://118.70.148.117:3306/smas_customer");
-//            cpds.setUser("smas");
-//            cpds.setPassword("Smas#2020");
-//            cpds.setMinPoolSize(2);
-//            cpds.setInitialPoolSize(2);
-//            cpds.setMaxPoolSize(4);
-            System.out.println("log" + cpds.getDriverClass() +" " + cpds.getJdbcUrl() + " " + cpds.getUser() +" " + cpds.getPassword());
             LogUtil.InfoExt(log, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "initC3P0", eventDate, "Null", "- C3P0 loaded with: " + cpds.getProperties());
             // Check database driver
             cpds.setMinPoolSize(Parameters.CONNECTION_MINPOOLSIZE);
