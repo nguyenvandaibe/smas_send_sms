@@ -7,12 +7,16 @@ import vn.com.viettel.dataSource.ConnectionPoolManager;
 import vn.com.viettel.util.CommonUtils;
 import vn.com.viettel.util.GlobalConstant;
 import vn.com.viettel.util.LogUtil;
+import vn.com.viettel.util.Parameters;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -32,13 +36,41 @@ public class QueueDAL {
      * @return
      * @throws SQLException
      */
-    public static List<SmsQueue> getSmsQueue(Connection connection, PreparedStatement statement, ResultSet rs, String node, int contentType, Logger logger) throws SQLException {
+    public static List<SmsQueue> getSmsQueue(Connection connection, PreparedStatement statement, ResultSet rs, String node, int contentType, Logger logger) throws SQLException, ParseException {
         StringBuilder sql = new StringBuilder();
 
         sql.append("SELECT sq.* FROM SmsQueue sq");
         sql.append(" LEFT JOIN SmsTimerConfig stc ON sq.SmsTimerConfigId=stc.Id ");
         sql.append(" WHERE (sq.SyncTime IS NULL OR sq.SyncTime < SYSDATE()) ");
-        sql.append(" ORDER BY sq.CreationTime DESC LIMIT 0, 2");
+
+        sql.append(" AND (sq.SmsTimerConfigId IS NULL OR (sq.SmsTimerConfigId IS NULL AND stc.SendTime < SYSDATE()))");
+
+        sql.append(" AND sq.RetryNum <= ").append(Parameters.MaxRetryTimes);
+
+        SimpleDateFormat parser = new SimpleDateFormat("HH:mm");
+        Calendar cal = Calendar.getInstance();
+        Date userDate = parser.parse(parser.format(cal.getTime()));
+
+        //Neu thoi gian gui tu
+        if (contentType == GlobalConstant.SEND_UNICODE) {
+            sql.append(" AND sq.ContentType = 1 ");
+        } else if (contentType == GlobalConstant.SEND_NORMAL) {
+            //Neu duoc phep gui tu dong thi lay cac ban tin duoc gui tu dong
+            if (userDate.after(Parameters.StartAutoTime) && userDate.before(Parameters.EndAutoTime)) {
+                sql.append(" AND (sq.ContentType IS NULL or sq.ContentType != 1)");
+            } else {
+                //chi lay cac ban tin gui chu dong
+                sql.append(" AND (sq.ContentType IS NOT NULL AND sq.ContentType != 1)");
+            }
+        }
+
+        if (!"".equals(Parameters.SEND_MOBILE) && Parameters.SEND_MOBILE.length() > 0) {
+            sql.append("AND sq.UserId IN (").append(Parameters.SEND_MOBILE).append(")");
+        }
+
+        sql.append(" ORDER BY sq.CreationTime DESC");
+        int rowNum = Parameters.MaxSMSInSession > 0 ? Parameters.MaxSMSInSession : 1000;
+        sql.append(" LIMIT ").append(rowNum).append(" OFFSET " + 0);
 
         List<SmsQueue> listSmsQueue = new ArrayList<>();
         SmsQueue queueItem;
