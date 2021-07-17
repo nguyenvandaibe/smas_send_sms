@@ -82,7 +82,7 @@ public class Parameters {
     public static Date TIMER_CONFIG_START;
     public static Date TIMER_CONFIG_END;
     public static int TIMER_CONFIG_DAY;
-    public static boolean IS_BULK_SMS = true;
+    public static boolean IS_BULK_SMS = false;
 
     //public static boolean TRANS_NUMBER_11_TO_10 = false;
     
@@ -122,7 +122,7 @@ public class Parameters {
             FromTime = properties.getProperty("FROM.TIME");
             ToTime = properties.getProperty("TO.TIME");
 //            IS_BULK_SMS = Boolean.parseBoolean(properties.getProperty("SMS.BULK_SMS"));
-            IS_BULK_SMS = true;
+            IS_BULK_SMS = false;
             SimpleDateFormat parser = new SimpleDateFormat("HH:mm");
             try {
 

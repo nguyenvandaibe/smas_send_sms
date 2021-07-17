@@ -11,9 +11,10 @@ import vn.com.viettel.BO.SmsQueue;
 import vn.com.viettel.DAL.QueueDAL;
 import vn.com.viettel.DAL.TimerDAL;
 import vn.com.viettel.DAL.UtilBusnisness;
-import vn.com.viettel.bulk.SmsBrandNameWs;
 import vn.com.viettel.bulk.SmsBulkNonUnicodeWs;
 import vn.com.viettel.dataSource.ConnectionPoolManager;
+import vn.com.viettel.services.ISmsSender;
+import vn.com.viettel.services.SmsBrandCCApiSender;
 import vn.com.viettel.thread.KThreadPoolExecutor;
 import vn.com.viettel.util.*;
 import ws.bulkSms.impl.Result;
@@ -31,12 +32,14 @@ public class BulkSMSApplication {
     private final Logger log;
     public Logger logMM;
     private BulkSMSApplication instance;
+    private ISmsSender smsSender;
 
     ProcessBulkSendSMS parentProcess;
 
     private final static String CLASS_NAME = BulkSMSApplication.class.getName();
 
     public BulkSMSApplication() {
+        this.smsSender = new SmsBrandCCApiSender();
         this.log = Logger.getLogger(GlobalConstant.PROCESS_BULK_SMS);
     }
 
@@ -77,7 +80,7 @@ public class BulkSMSApplication {
                 }
             } else {
                 //Gui tin nhan qua smsbrandName
-                Result ret = SmsBrandNameWs.sendSms("39fdb10a-5a5f-ed3a-77ae-24b74c61102a", isdn, isdn, serviceID, sms, false);
+                Result ret = smsSender.send("smas", "258a@369", "SMAS", "SMAS", "84379478886", sms, "0");
 
                 if (ret != null) {
                     if (new Long(1).equals(ret.getResult())) {
