@@ -11,8 +11,7 @@ package vn.com.viettel.BO;
  */
 public class TimerConfigBO {
     private String TimerConfigId;
-    private int SchoolId;
-    private int partitionId;
+    private String TenantId;
 
     
     public String getTimerConfigId() {
@@ -23,19 +22,11 @@ public class TimerConfigBO {
         this.TimerConfigId = TimerConfigId;
     }
 
-    public int getSchoolId() {
-        return SchoolId;
+    public String getTenantId() {
+        return TenantId;
     }
 
-    public void setSchoolId(int SchoolId) {
-        this.SchoolId = SchoolId;
-    }
-
-    public int getPartitionId() {
-        return partitionId;
-    }
-
-    public void setPartitionId(int partitionId) {
-        this.partitionId = partitionId;
+    public void setTenantId(String tenantId) {
+        TenantId = tenantId;
     }
 }

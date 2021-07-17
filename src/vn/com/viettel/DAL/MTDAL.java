@@ -167,7 +167,7 @@ public class MTDAL {
                 if (!"".equals(objmt.getSMS_TIMER_CONFIG_ID())) {
                     timerBO = new TimerConfigBO();
                     timerBO.setTimerConfigId(objmt.getSMS_TIMER_CONFIG_ID());
-                    timerBO.setSchoolId(objmt.getUNIT_ID());
+//                    timerBO.setSchoolId(objmt.getUNIT_ID());
 //                    timerBO.setPartitionId(objmt.getUNIT_ID() % 100);
                     if (!lstTimer.contains(timerBO)) {
                         lstTimer.add(timerBO);
@@ -182,7 +182,7 @@ public class MTDAL {
                 statTimer = connection.prepareStatement(sqlUpdateTimer);
                 for (TimerConfigBO timer : lstTimer) {
 //                    statTimer.setInt(1, timer.getPartitionId());
-                    statTimer.setInt(2, timer.getSchoolId());
+//                    statTimer.setInt(2, timer.getSchoolId());
                     statTimer.setString(3, timer.getTimerConfigId());
                     statTimer.addBatch();
                 }

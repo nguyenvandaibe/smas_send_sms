@@ -3,16 +3,14 @@ package vn.com.viettel.DAL;
 
 import org.apache.log4j.Logger;
 import vn.com.viettel.BO.SmsQueue;
+import vn.com.viettel.BO.TimerConfigBO;
 import vn.com.viettel.dataSource.ConnectionPoolManager;
 import vn.com.viettel.util.CommonUtils;
 import vn.com.viettel.util.GlobalConstant;
 import vn.com.viettel.util.LogUtil;
 import vn.com.viettel.util.Parameters;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -98,11 +96,8 @@ public class QueueDAL {
         PreparedStatement statement = null;
         PreparedStatement statTimer = null;
 
-        LogUtil.InfoExt(logger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "UpdateSMSHistory", CommonUtils.getDateNow(), "", "Cap nhat trang thai dang gui");
-        return true;
-        /*
         try {
-            String sqlUpdateSmsQueue = "Update SmsQueue set SyncTime = (SYSDATE+?/24) where Id = ?";
+            String sqlUpdateSmsQueue = "UPDATE SmsQueue SET SyncTime = (SYSDATE()+?/24) WHERE Id = ?";
             statement = connection.prepareStatement(sqlUpdateSmsQueue);
             List<TimerConfigBO> lstTimer = new ArrayList<>();
             TimerConfigBO timerBO = null;
@@ -116,8 +111,7 @@ public class QueueDAL {
                 if (!"".equals(objSmsQueue.getSmsTimerConfigId())) {
                     timerBO = new TimerConfigBO();
                     timerBO.setTimerConfigId(objSmsQueue.getSmsTimerConfigId());
-//                    timerBO.setSchoolId(objSmsQueue.getSenderUnitId());
-//                    timerBO.setPartitionId(objmt.getUNIT_ID() % 100);
+                    timerBO.setTenantId(objSmsQueue.getTenantId());
                     if (!lstTimer.contains(timerBO)) {
                         lstTimer.add(timerBO);
                     }
@@ -127,20 +121,16 @@ public class QueueDAL {
 
             //Cap nhat trang thai hen gio gui tin
             if (!lstTimer.isEmpty()) {
-                String sqlUpdateTimer = "UPDATE SmsTimerConfig set Status=2, LastModificationTime=sysdate WHERE SchoolId=? and Id=? and Status=1";
+                String sqlUpdateTimer = "UPDATE SmsTimerConfig SET Status=2, LastModificationTime=SYSDATE() WHERE TenantId=? and Id=? and Status=1";
                 statTimer = connection.prepareStatement(sqlUpdateTimer);
                 for (TimerConfigBO timer : lstTimer) {
-//                    statTimer.setInt(1, timer.getPartitionId());
-                    statTimer.setInt(2, timer.getSchoolId());
+                    statTimer.setString(2, timer.getTenantId());
                     statTimer.setString(3, timer.getTimerConfigId());
                     statTimer.addBatch();
                 }
                 statTimer.executeBatch();
             }
 
-            //connection.commit();
-            //long ecuteTime = TimeUnit.MILLISECONDS.toMillis(System.currentTimeMillis() - start);
-            //LogUtil.writeInfoLog(logger, logsms, "UpdateStatusSMSSending thoi gian thuc hien  cap nhat " + lstSendSMS.size() + " ban ghi la " + ecuteTime + " ms");
             return true;
         } catch (SQLException e) {
             connection.rollback();
@@ -155,7 +145,6 @@ public class QueueDAL {
             }
             connection.setAutoCommit(true);
         }
-         */
     }
 
     /**
@@ -180,15 +169,58 @@ public class QueueDAL {
             }
             int retryNum = objSmsQueue.getRetryNum();
             String phone = objSmsQueue.getMobile();
-            String requestID = objSmsQueue.getId();
-            String unitId = objSmsQueue.getSenderUnitId();
+            String requestID = objSmsQueue.getRequestId();
+            String senderUnitId = objSmsQueue.getSenderUnitId();
+            String historyID = objSmsQueue.getHistoryRawId();
             Date eventDate = CommonUtils.getDateNow();
 
             if (sendResult == true) {
-                String para = "Mobile=" + phone + "requestID: " + requestID + " unitId: " + unitId;
+                stmt = connectionThread.prepareCall("{call SpProcessSendSms(?,?,?,?,?,?,?)}");
+                stmt.setString(1, requestID);
+                stmt.setInt(2, 1);// @IS_SUCCESS
+                stmt.setString(3, historyID);
+                // status in sms.mt
+                stmt.setInt(4, GlobalConstant.SEND_SUCCESS);
+                stmt.setInt(5, retryNum);
+                stmt.setString(6, serviceId);
+                stmt.setString(7, senderUnitId);
+                stmt.execute();
+                String para = "Mobile=" + phone + "requestID: " + requestID + " unitId: " + senderUnitId;
                 LogUtil.InfoExt(logger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "UpdateSMSHistory", eventDate, para, "Send Success SMS");
             } else {
-                LogUtil.InfoExt(logger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "UpdateSMSHistory", eventDate, null, "Send SMS failed");
+                int numRetryWhenFail = retryNum + 1;
+
+                if (numRetryWhenFail >= Parameters.MaxRetryTimes) {
+                    stmt = connectionThread.prepareCall("{call SpProcessSendSms(?,?,?,?,?,?,?)}");
+
+                    stmt.setString(1, requestID);
+                    stmt.setInt(2, 0);// @IS_SUCCESS
+                    stmt.setString(3, historyID);
+                    // Het so lan retry: STATUS MT = 4
+                    stmt.setInt(4, GlobalConstant.RETRY_FAILURE);
+                    stmt.setInt(5, numRetryWhenFail);
+                    stmt.setString(6, serviceId);
+                    stmt.setString(7, senderUnitId);
+                    stmt.execute();
+                    String para = "requestID: " + requestID + " historyID: " + historyID + " unitId: " + senderUnitId + " -mobile: " + phone + " - " + " Retry..." + String.valueOf(numRetryWhenFail);
+                    LogUtil.InfoExt(logger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "UpdateSMSHistory", eventDate, para, "Send Unsuccess SMS");
+                } else {
+                    // update row table SmsQueue (retry ++)
+                    stmt = connectionThread.prepareCall("{call SpProcessSendSms(?,?,?,?,?,?,?)}");
+
+                    stmt.setString(1, requestID);
+                    stmt.setInt(2, 0);
+                    stmt.setString(3, historyID);
+                    stmt.setInt(4, GlobalConstant.RETRY_NORMAL); // STATUS
+                    // MT
+                    stmt.setInt(5, numRetryWhenFail);
+                    stmt.setString(6, serviceId);
+                    stmt.setString(7, senderUnitId);
+                    stmt.execute();
+
+                    String para = "requestID: " + requestID + " historyID: " + historyID + " unitId: " + senderUnitId + " -mobile: " + phone + " - " + " Retry..." + numRetryWhenFail;
+                    LogUtil.InfoExt(logger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "UpdateSMSHistory", eventDate, para, "Send Unsuccessful SMS");
+                }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -202,6 +234,43 @@ public class QueueDAL {
                 }
             } catch (SQLException e2) {
                 LogUtil.ErrorExt(LOGGER, CLASS_NAME, "UpdateSmsHistory", CommonUtils.getDateNow(), "Cannot UpdateSMSHistory:", e2);
+            }
+        }
+    }
+
+    /**
+     * Them tin nhan canh bao vao MT
+     *
+     * @param connectionLog
+     * @param content
+     * @param mobile
+     */
+    public static void insertMassageWarning(Connection connectionLog, String content, String mobile) {
+        CallableStatement stmtLog = null;
+        //Connection connectionLog = null;
+        try {
+            if (connectionLog == null || connectionLog.isClosed()) {
+                connectionLog = ConnectionPoolManager.getSMSConnection(LOGGER);
+            }
+            if (connectionLog == null) {
+                return;
+            }
+            stmtLog = connectionLog.prepareCall("{call SpInsertSms (?, ?)}");
+            stmtLog.setString(1, content);
+            stmtLog.setString(2, mobile);
+            stmtLog.execute();
+        } catch (SQLException | NumberFormatException e) {
+            LogUtil.ErrorExt(LOGGER, CLASS_NAME, "insertMassageWarning", CommonUtils.getDateNow(), "Cannot insert MT:" + e.getMessage(), e);
+        } finally {
+            try {
+                if (stmtLog != null) {
+                    stmtLog.close();
+                }
+                if (connectionLog != null) {
+                    connectionLog.close();
+                }
+            } catch (SQLException e2) {
+                LogUtil.ErrorExt(LOGGER, CLASS_NAME, "insertMassageWarning", CommonUtils.getDateNow(), "Cannot close connect insert MT:", e2);
             }
         }
     }

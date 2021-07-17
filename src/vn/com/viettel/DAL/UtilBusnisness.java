@@ -118,7 +118,7 @@ public class UtilBusnisness {
                     if (mobileReceiver.isEmpty()) {
                         continue;
                     }
-                    MTDAL.insertMassageWarning(connectionLog, content, mobileReceiver);
+                    QueueDAL.insertMassageWarning(connectionLog, content, mobileReceiver);
                 }
             }
             //connectionLog.commit();
