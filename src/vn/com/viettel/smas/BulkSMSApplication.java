@@ -80,8 +80,8 @@ public class BulkSMSApplication {
                 }
             } else {
                 //Gui tin nhan qua smsbrandName
-                Result ret = smsSender.send("smas", "258a@369", "SMAS", "SMAS", "84379478886", sms, "0");
-
+                Result ret = smsSender.send("smas", "258a@369", "SMAS", "SMAS", isdn, sms, "0");
+                
                 if (ret != null) {
                     if (new Long(1).equals(ret.getResult())) {
                         res = true;
@@ -310,13 +310,13 @@ public class BulkSMSApplication {
                     String sms = StringUtil.removeSpecialChar(queueItem.getSmsContent().trim());
                     //String phone = objSms.getUSER_ID();
                     StringBuilder strphone = new StringBuilder(String.valueOf(Parameters.CountryCode));
-                    strphone.append(UtilBusnisness.getISDN(queueItem.getReceiverId()));
+                    strphone.append(UtilBusnisness.getISDN(queueItem.getMobile()));
                     String phone = strphone.toString().trim();
                     serviceID = queueItem.getServiceId();
                     try {
 
                         // Thuc hien gui tin nhan
-                        LogUtil.InfoExt(log, GlobalConstant.LOG_TYPE_END_ACTION, CLASS_NAME, "processSendSMS", eventDate, para, "start send sms SmsQueueId = " + queueItem.getId());
+                        LogUtil.InfoExt(log, GlobalConstant.LOG_TYPE_END_ACTION, CLASS_NAME, "processSendSMS", eventDate, para, "start send sms to = " + phone);
 
                         result = sendSMSProcess(serviceID, maxLength, sms, phone, UUID.randomUUID().toString());
                         LogUtil.InfoExt(log, GlobalConstant.LOG_TYPE_END_ACTION, CLASS_NAME, "processSendSMS", eventDate, para, "end send sms, result=" + result);
