@@ -7,6 +7,12 @@ import java.util.Date;
 public class SmsQueue {
 
     private String Id;
+    private String ExtraProperties;
+    private String ConcurrencyStamp;
+    private Date CreationTime;
+    private String CreatorId;
+    private String LastModifierId;
+    private Date LastModificationTime;
     private String TenantId;
     private String Mobile;
     private int SmsTypeId;
@@ -44,6 +50,13 @@ public class SmsQueue {
     }
 
     public SmsQueue(ResultSet rs) throws SQLException {
+        Id = rs.getString("Id");
+        ExtraProperties = rs.getString("ExtraProperties");
+        ConcurrencyStamp = rs.getString("ConcurrencyStamp");
+        CreationTime = rs.getTime("CreationTime");
+        CreatorId = rs.getString("CreatorId");
+        LastModifierId = rs.getString("LastModifierId");
+        LastModificationTime = rs.getTime("LastModificationTime");
         TenantId = rs.getString("TenantId");
         Mobile = rs.getString("Mobile");
         SmsTypeId = rs.getInt("SmsTypeId");
@@ -84,6 +97,54 @@ public class SmsQueue {
 
     public void setId(String id) {
         Id = id;
+    }
+
+    public String getExtraProperties() {
+        return ExtraProperties;
+    }
+
+    public void setExtraProperties(String extraProperties) {
+        ExtraProperties = extraProperties;
+    }
+
+    public String getConcurrencyStamp() {
+        return ConcurrencyStamp;
+    }
+
+    public void setConcurrencyStamp(String concurrencyStamp) {
+        ConcurrencyStamp = concurrencyStamp;
+    }
+
+    public Date getCreationTime() {
+        return CreationTime;
+    }
+
+    public void setCreationTime(Date creationTime) {
+        CreationTime = creationTime;
+    }
+
+    public String getCreatorId() {
+        return CreatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        CreatorId = creatorId;
+    }
+
+    public String getLastModifierId() {
+        return LastModifierId;
+    }
+
+    public void setLastModifierId(String lastModifierId) {
+        LastModifierId = lastModifierId;
+    }
+
+    public Date getLastModificationTime() {
+        return LastModificationTime;
+    }
+
+    public void setLastModificationTime(Date lastModificationTime) {
+        LastModificationTime = lastModificationTime;
     }
 
     public String getTenantId() {
@@ -343,7 +404,7 @@ public class SmsQueue {
     }
 
     public String getPara() {
-        String para = "TenantId=" + TenantId;
+        String para = "TenantId=" + TenantId + " Id=" + Id;
         return para;
     }
 }

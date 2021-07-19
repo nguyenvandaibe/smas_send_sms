@@ -96,6 +96,7 @@ public class QueueDAL {
     public static boolean UpdateStatusSMSSending(Connection connection, List<SmsQueue> listSendSms, Logger logger) throws SQLException {
         PreparedStatement statement = null;
         PreparedStatement statTimer = null;
+        connection.setAutoCommit(false);
 
         try {
             String sqlUpdateSmsQueue = "UPDATE SmsQueue SET SyncTime = (SYSDATE()+?/24) WHERE Id = ?";
@@ -125,8 +126,8 @@ public class QueueDAL {
                 String sqlUpdateTimer = "UPDATE SmsTimerConfig SET Status=2, LastModificationTime=SYSDATE() WHERE TenantId=? and Id=? and Status=1";
                 statTimer = connection.prepareStatement(sqlUpdateTimer);
                 for (TimerConfigBO timer : lstTimer) {
-                    statTimer.setString(2, timer.getTenantId());
-                    statTimer.setString(3, timer.getTimerConfigId());
+                    statTimer.setString(1, timer.getTenantId());
+                    statTimer.setString(2, timer.getTimerConfigId());
                     statTimer.addBatch();
                 }
                 statTimer.executeBatch();
@@ -170,7 +171,7 @@ public class QueueDAL {
             }
             int retryNum = objSmsQueue.getRetryNum();
             String phone = objSmsQueue.getMobile();
-            String requestID = objSmsQueue.getRequestId();
+            String requestID = objSmsQueue.getId();
             String senderUnitId = objSmsQueue.getSenderUnitId();
             String historyID = objSmsQueue.getHistoryRawId();
             Date eventDate = CommonUtils.getDateNow();
@@ -204,7 +205,7 @@ public class QueueDAL {
                     stmt.setString(7, senderUnitId);
                     stmt.execute();
                     String para = "requestID: " + requestID + " historyID: " + historyID + " unitId: " + senderUnitId + " -mobile: " + phone + " - " + " Retry..." + String.valueOf(numRetryWhenFail);
-                    LogUtil.InfoExt(logger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "UpdateSMSHistory", eventDate, para, "Send Unsuccess SMS");
+                    LogUtil.InfoExt(logger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "UpdateSMSHistory", eventDate, para, "Gui tin nhan khong thanh cong, tang RetryNum");
                 } else {
                     // update row table SmsQueue (retry ++)
                     stmt = connectionThread.prepareCall("{call SpProcessSendSms(?,?,?,?,?,?,?)}");
@@ -220,7 +221,7 @@ public class QueueDAL {
                     stmt.execute();
 
                     String para = "requestID: " + requestID + " historyID: " + historyID + " unitId: " + senderUnitId + " -mobile: " + phone + " - " + " Retry..." + numRetryWhenFail;
-                    LogUtil.InfoExt(logger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "UpdateSMSHistory", eventDate, para, "Send Unsuccessful SMS");
+                    LogUtil.InfoExt(logger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "UpdateSMSHistory", eventDate, para, "Gui tin nhan khong thanh cong, ID = " + objSmsQueue.getId() + " RetryNUm = " + numRetryWhenFail);
                 }
             }
         } catch (SQLException throwables) {

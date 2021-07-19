@@ -113,7 +113,7 @@ public class Parameters {
                 DBPass = properties.getProperty("DB.Pass");
             }*/
             MaxRetryTimes = Integer.parseInt(properties
-                    .getProperty("MAS.RETRY.TIMES"));
+                    .getProperty("MAX.RETRY.TIMES"));
             CountryCode = properties.getProperty("COUNTRY.CODE");
             SleepTime = Long.parseLong(properties.getProperty("SLEEP.TIME"));
             if (SleepTime == 0) {
