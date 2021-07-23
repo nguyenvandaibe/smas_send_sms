@@ -51,9 +51,9 @@ public class GlobalConstant {
     public final static String PROCESS_BULK_SMS="SMS_BRANDNAME_NONE_UNICODE";
     public final static String PROCESS_SMS_BRANDNAME="SMS_BRANDNAME_UNICODE";
     
-    public final static String LOG_CONFIG_PATH="D:\\ITSOL\\Viettel\\smas_send_sms\\etc\\log4j.conf";
-    public final static String GENERAL_CONFIG_PATH="D:\\ITSOL\\Viettel\\smas_send_sms\\etc\\general.cfg";
-    public final static String SMAS_CORE_CONFIG_PATH="D:\\ITSOL\\Viettel\\smas_send_sms\\etc\\mysql_smas_core.conf";
+    public final static String LOG_CONFIG_PATH="src/../etc/log4j.conf";
+    public final static String GENERAL_CONFIG_PATH="src/../etc/general.cfg";
+    public final static String SMAS_CORE_CONFIG_PATH="src/../etc/mysql_smas_core.conf";
 
     public final static String ERR_DUPLICATE_MESSAGE="DUPLICATE MESSAGE";
      
