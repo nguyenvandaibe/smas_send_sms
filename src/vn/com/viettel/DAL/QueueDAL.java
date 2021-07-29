@@ -171,14 +171,14 @@ public class QueueDAL {
             }
             int retryNum = objSmsQueue.getRetryNum();
             String phone = objSmsQueue.getMobile();
-            String requestID = objSmsQueue.getId();
+            String queueId = objSmsQueue.getId();
             String senderUnitId = objSmsQueue.getSenderUnitId();
             String historyID = objSmsQueue.getHistoryRawId();
             Date eventDate = CommonUtils.getDateNow();
 
             if (sendResult == true) {
                 stmt = connectionThread.prepareCall("{call SpProcessSendSms(?,?,?,?,?,?,?)}");
-                stmt.setString(1, requestID);
+                stmt.setString(1, queueId);
                 stmt.setInt(2, 1);// @IS_SUCCESS
                 stmt.setString(3, historyID);
                 // status in sms.mt
@@ -187,7 +187,7 @@ public class QueueDAL {
                 stmt.setString(6, serviceId);
                 stmt.setString(7, senderUnitId);
                 stmt.execute();
-                String para = "Mobile=" + phone + "requestID: " + requestID + " unitId: " + senderUnitId;
+                String para = "Mobile=" + phone + "requestID: " + queueId + " unitId: " + senderUnitId;
                 LogUtil.InfoExt(logger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "UpdateSMSHistory", eventDate, para, "Send Success SMS");
             } else {
                 int numRetryWhenFail = retryNum + 1;
@@ -195,7 +195,7 @@ public class QueueDAL {
                 if (numRetryWhenFail >= Parameters.MaxRetryTimes) {
                     stmt = connectionThread.prepareCall("{call SpProcessSendSms(?,?,?,?,?,?,?)}");
 
-                    stmt.setString(1, requestID);
+                    stmt.setString(1, queueId);
                     stmt.setInt(2, 0);// @IS_SUCCESS
                     stmt.setString(3, historyID);
                     // Het so lan retry: STATUS MT = 4
@@ -204,13 +204,13 @@ public class QueueDAL {
                     stmt.setString(6, serviceId);
                     stmt.setString(7, senderUnitId);
                     stmt.execute();
-                    String para = "requestID: " + requestID + " historyID: " + historyID + " unitId: " + senderUnitId + " -mobile: " + phone + " - " + " Retry..." + String.valueOf(numRetryWhenFail);
+                    String para = "requestID: " + queueId + " historyID: " + historyID + " unitId: " + senderUnitId + " -mobile: " + phone + " - " + " Retry..." + String.valueOf(numRetryWhenFail);
                     LogUtil.InfoExt(logger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "UpdateSMSHistory", eventDate, para, "Gui tin nhan khong thanh cong, tang RetryNum");
                 } else {
                     // update row table SmsQueue (retry ++)
                     stmt = connectionThread.prepareCall("{call SpProcessSendSms(?,?,?,?,?,?,?)}");
 
-                    stmt.setString(1, requestID);
+                    stmt.setString(1, queueId);
                     stmt.setInt(2, 0);
                     stmt.setString(3, historyID);
                     stmt.setInt(4, GlobalConstant.RETRY_NORMAL); // STATUS
@@ -220,7 +220,7 @@ public class QueueDAL {
                     stmt.setString(7, senderUnitId);
                     stmt.execute();
 
-                    String para = "requestID: " + requestID + " historyID: " + historyID + " unitId: " + senderUnitId + " -mobile: " + phone + " - " + " Retry..." + numRetryWhenFail;
+                    String para = "requestID: " + queueId + " historyID: " + historyID + " unitId: " + senderUnitId + " -mobile: " + phone + " - " + " Retry..." + numRetryWhenFail;
                     LogUtil.InfoExt(logger, GlobalConstant.LOG_TYPE_INFO, CLASS_NAME, "UpdateSMSHistory", eventDate, para, "Gui tin nhan khong thanh cong, ID = " + objSmsQueue.getId() + " RetryNUm = " + numRetryWhenFail);
                 }
             }
